@@ -1,55 +1,22 @@
 
 
 
-const map_element =document.getElementById('map_container')
-map_element.innerHTML = `<img src ="image/paris_map.jpg" alt="Carte des combats" style="max-width: 2500px;
-	height: auto;">`
 
-
-
-const elem1 =document.getElementById('tour')
-elem1.innerHTML = `<img id="combat1" src ="image/eiffel_tower.png" alt="Tour Eiffel" 
-style="max-width: 100px; height:auto; position:absolute; top: 650px; left: 720px">`
-combat1.addEventListener("click", (e)=>{
-
-})
-
-
-const elem2 =document.getElementById('gare')
-elem2.innerHTML = `<img id="combat2" src ="image/gare.png" alt="Gare de Lyon" 
-style="max-width: 200px; height:auto; position:absolute; top: 800px; left: 1450px">`
-combat2.addEventListener("click", (e)=>{
-
-})
-
-
-const elem3 =document.getElementById('WCS')
-elem3.innerHTML = `<img id="combat3" src ="image/WCS.png" alt="Wild Code School" 
-style="max-width: 100px; height:auto; position:absolute; top: 890px; left: 1280px">`
-combat3.addEventListener("click", (e)=>{
-console.log("click");
-})
-
-
-/*génération de la page de combat  */
-
-/*Données nécessaires au combat : 
-- 5 super heros avec leurs caractéristiques
-- background
-- items à récuperer?
-*/
 /* decla variable*/
 let persoTeam = []
 let imagePerso=[]
 let imageBad =[]
 let badTeam =[]
 
-
+const map_element =document.getElementById('map_container')
 const fightScreenElt = document.getElementById("fightScreen")
 const injectHeroes = document.getElementById('select_heroes')
 const choix = document.getElementById('choice')
 const injectTeamHeroes = document.getElementById('teamPerso')
 const btn = document.getElementById('btn_next')
+const elem1 =document.getElementById('tour')
+const elem2 =document.getElementById('gare')
+const elem3 =document.getElementById('WCS')
 
 const reset = () => {
 	fightScreenElt.innerHTML = ""
@@ -57,6 +24,41 @@ const reset = () => {
 	choix .innerHTML = ""
 	injectTeamHeroes.innerHTML = ""
 	btn.innerHTML = ""
+	map_container.innerHTML = ""
+	elem1.innerHTML = ""
+	elem2.innerHTML = ""
+	elem3.innerHTML = ""
+}
+/*creation de la map */
+
+const createMap = () => {
+	map_element.innerHTML = `<img src ="image/paris_map.jpg" alt="Carte des combats" style="max-width: 2500px;
+		height: auto;">`
+
+	
+	elem1.innerHTML = `<img id="combat1" src ="image/eiffel_tower.png" alt="Tour Eiffel" 
+	style="max-width: 100px; height:auto; position:absolute; top: 650px; left: 720px">`
+	combat1.addEventListener("click", (e)=>{
+		reset()
+    	lancerCombat("url('image/eiffel_tower.jpg')",0,"fnScenario")
+
+	})
+
+
+	elem2.innerHTML = `<img id="combat2" src ="image/gare.png" alt="Gare de Lyon" 
+	style="max-width: 200px; height:auto; position:absolute; top: 800px; left: 1450px">`
+	combat2.addEventListener("click", (e)=>{
+		reset()
+    	lancerCombat("url('image/gare.jpg')",0,"fnScenario")
+
+	})
+
+
+	elem3.innerHTML = `<img id="combat3" src ="image/WCS.png" alt="Wild Code School" 
+	style="max-width: 100px; height:auto; position:absolute; top: 890px; left: 1280px">`
+	combat3.addEventListener("click", (e)=>{
+	console.log("click");
+	})
 }
 
 /*création zone de fight*/
@@ -66,20 +68,18 @@ const createDivPerso = () => {
 	divPerso.style.backgroundColor = "black"
 	divPerso.style.height = "1260px"
 	divPerso.style.width = "350px"
-	/*divPerso.style.border = "1px solid red"*/
 	divPerso.id="divPersoId"
 	fightScreen.appendChild(divPerso)
 }
 const createDivZone = (urlBack) => {
 	let divZone = document.createElement("div")
 	divZone.style.backgroundImage = urlBack
-	divZone.style.height = "860px"
+	divZone.style.height = "1260px"
 	divZone.style.position ="absolute"
 	divZone.style.top="0px"
 	divZone.style.left="360px"
 	/*divZone.style.marginLeft= "200px"*/
 	divZone.style.width = "1400px"
-	/*divZone.style.border = "1px solid blue"*/
 	divZone.id="divZoneId"
 	fightScreen.appendChild(divZone)
 }
@@ -90,7 +90,8 @@ const createDivZone = (urlBack) => {
 const createPicturePerso = (perso,tab) => {
 	let img = new Image()
 	img.src = perso.images.sm
-	tab.push(img)
+	console.log(perso)
+	if (tab.length<6){tab.push(img)}
 	console.log("create image!")
 }
 
@@ -104,7 +105,6 @@ const placerPerso = (persoImg,posX, posY,emplacement)=>{
 //div avec caractéristique
 const caractere = (perso) => {
 	let divCaract = document.createElement("div")
-	/*divCaract.style.border = "10px solid purple"*/
 	divCaract.style.color = "white"
 	divCaract.style.width = "150px"
 	divCaract.classList.add("caractClass")
@@ -142,10 +142,12 @@ const createButtonFight = (perso1,perso2,i) => {
     		}
     		else if (perso1.powerstats.combat<=0) {
     			console.log("perso2 win"+perso1.powerstats.combat)
-    			persoTeam.splice(i,1)//suppression perso battu
+    			persoTeam.splice(i-1,1)//suppression perso battu
+    			imagePerso.splice(i-1,1)//suppression perso battu
     			console.log("direction map ou game over si lenght = 0")
     			console.log(persoTeam)
-
+    			reset()
+    			createMap()
 
     		}
     		else {
@@ -157,38 +159,27 @@ const createButtonFight = (perso1,perso2,i) => {
 }
 
 
-/*récuperation perso API : attention asynchrone ! */
+/*lancer la pâge combat avec les perso selectionné */
 const lancerCombat=(urlBack,numBad,fnScenario) => {
 createDivPerso()
 createDivZone(urlBack)
 
-/*const recupPerso = (id) => {
-	return fetch(`https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/id/${id}.json`)
-		.then(res => res.json())
-}
 
-Promise.all([
-	recupPerso(1),
-	recupPerso(2),
-	recupPerso(3),
-	recupPerso(4),
-	recupPerso(5),
-]).then(heroes => {*/
 	let heroes = persoTeam
 	console.log(heroes)
 	console.log(heroes[0].slug)
 	heroes.forEach(function(perso) {
+		if (perso != undefined) {
 		createPicturePerso(perso,imagePerso)
   		console.log("forEach");
+  	}
 	})
 	//tab des méchants = on recupere la badteam fait sur selection des perso
 	badTeam.forEach(function(perso) {
 		createPicturePerso(perso,imageBad)
   		console.log("badTeam"+badTeam);
 	})
-	/*imageBad = imagePerso 
-	persoTeam = heroes
-	badTeam = persoTeam*/
+
 
 	tabX=["10px","260px","510px","760px","1010px"]
 	tabY=["10px","260px","510px","760px","1010px"]
@@ -219,12 +210,10 @@ Promise.all([
 			createButtonFight(persoTeam[i],badTeam[numBad],i)
 		})
 	}
-}/*)
-
-}*/
+}
 
 
-
+//creer page de selection des persos
 const persoPage = () => {
 const baseUrl = 'https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api'
 
