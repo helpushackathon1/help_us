@@ -1,4 +1,15 @@
 
+#fightScreen {
+	display: flex;
+
+
+}
+
+.caractClass {
+	white-space: pre-wrap;
+}
+
+
 .dochoice{
     display: flex;
     justify-content: center;
@@ -95,3 +106,4 @@
     opacity: 1;
     right: 0;
   }
+
