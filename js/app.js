@@ -81,6 +81,11 @@ const createButtonFight = (perso1,perso2,i) => {
     	fightButton.setAttribute("value","FIGHT")
     	fightButton.setAttribute("type","button")
 		fightButton.style.position ="absolute"
+		fightButton.style.backgroundColor = "red"
+		fightButton.style.fontSize = "24px"
+		fightButton.style.padding = "10px"
+		fightButton.style.color = "white"
+		fightButton.id = "fightButtonId"
 		fightButton.style.top="800px"
 		fightButton.style.left="700px"
 		fightButton.width = "100px"
@@ -96,7 +101,6 @@ const createButtonFight = (perso1,perso2,i) => {
     		}
     		else if (perso1.powerstats.combat<=0) {
     			console.log("perso2 win"+perso1.powerstats.combat)
-    			
     			persoTeam.splice(i,1)//suppression perso battu
     			console.log("direction map ou game over si lenght = 0")
     			console.log(persoTeam)
