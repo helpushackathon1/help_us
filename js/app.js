@@ -14,9 +14,11 @@ const injectHeroes = document.getElementById('select_heroes')
 const choix = document.getElementById('choice')
 const injectTeamHeroes = document.getElementById('teamPerso')
 const btn = document.getElementById('btn_next')
+const btn2 = document.getElementById('btn_next2')
 const elem1 =document.getElementById('tour')
 const elem2 =document.getElementById('gare')
 const elem3 =document.getElementById('WCS')
+const story1 = document.getElementById('story')
 
 const reset = () => {
 	fightScreenElt.innerHTML = ""
@@ -24,29 +26,32 @@ const reset = () => {
 	choix .innerHTML = ""
 	injectTeamHeroes.innerHTML = ""
 	btn.innerHTML = ""
+	btn2.innerHTML = ""
 	map_container.innerHTML = ""
 	elem1.innerHTML = ""
 	elem2.innerHTML = ""
 	elem3.innerHTML = ""
+	story1.innerHTML = ""
 }
 /*creation de la map */
 
 const createMap = () => {
-	map_element.innerHTML = `<img src ="image/paris_map.jpg" alt="Carte des combats" style="max-width: 2500px;
+	reset()
+	map_element.innerHTML = `<img src ="image/paris_map.jpg" alt="Carte des combats" style="max-width: 1800px;
 		height: auto;">`
 
 	
 	elem1.innerHTML = `<img id="combat1" src ="image/eiffel_tower.png" alt="Tour Eiffel" 
-	style="max-width: 100px; height:auto; position:absolute; top: 650px; left: 720px">`
+	style="max-width: 100px; height:auto; position:absolute; top: 500px; left: 700px">`
 	combat1.addEventListener("click", (e)=>{
 		reset()
-    	lancerCombat("url('image/eiffel_tower.jpg')",0,"fnScenario")
+    	lancerCombat("url('image/eiffel_tower.jpg')",0,"fnscenario")
 
 	})
 
 
 	elem2.innerHTML = `<img id="combat2" src ="image/gare.png" alt="Gare de Lyon" 
-	style="max-width: 200px; height:auto; position:absolute; top: 800px; left: 1450px">`
+	style="max-width: 200px; height:auto; position:absolute; top: 600px; left: 1100px">`
 	combat2.addEventListener("click", (e)=>{
 		reset()
     	lancerCombat("url('image/gare.jpg')",0,"fnScenario")
@@ -55,9 +60,12 @@ const createMap = () => {
 
 
 	elem3.innerHTML = `<img id="combat3" src ="image/WCS.png" alt="Wild Code School" 
-	style="max-width: 100px; height:auto; position:absolute; top: 890px; left: 1280px">`
+	style="max-width: 100px; height:auto; position:absolute; top: 600px; left: 900px">`
 	combat3.addEventListener("click", (e)=>{
 	console.log("click");
+	reset()
+	textPage("Les valeureux héros sont victorieux de leurs défis, et peuvent maintenant délivrer de leur victimes de la privation de la fribre.<br> Par chance, en retournant à la WCS les supers-héros ont aperçus un technicien 'Orange' sur leur chemin et l'ont trainer jusqu'a la WCS.<br>FIN HAPPY","image/trio_de_choc.png")
+	btn2.innerHTML = ""
 	})
 }
 
@@ -114,6 +122,8 @@ const caractere = (perso) => {
 	return divCaract
 }
 
+/*lancer la pâge combat avec les perso selectionné */
+const lancerCombat=(urlBack,numBad,fnScenario) => {
 /*creation du bouton fight si clic sur perso */
 
 const createButtonFight = (perso1,perso2,i) => {
@@ -139,6 +149,16 @@ const createButtonFight = (perso1,perso2,i) => {
     		if (perso2.powerstats.combat <= 0){
     			console.log("perso1 win"+perso1.powerstats.combat )
     			console.log("direction scenario suivant")
+    			if (urlBack == "url('image/eiffel_tower.jpg')"){
+    				reset()
+    				textPage("Bravo, tu as réussi à rétablir l'éléctricité á Paris, nos demoisselles sont libres. OUI MAIS !<br><br> Sacrebleu ses formatrices sont exigentes. Rassemble les matériaux pour résoudre leurs problémes. ")
+    			}
+    			else {
+    				reset()
+    				textPage("Félicitation tu as réussi à récuperer le materiel essentielle a la résolution de notre probléme tu peut à préscent regagner la WCS afin de remplir ta mission.", "url")
+    			}
+    			/*fnScenario()*/
+    			console.log("FN = "+fnScenario)
     		}
     		else if (perso1.powerstats.combat<=0) {
     			console.log("perso2 win"+perso1.powerstats.combat)
@@ -159,8 +179,7 @@ const createButtonFight = (perso1,perso2,i) => {
 }
 
 
-/*lancer la pâge combat avec les perso selectionné */
-const lancerCombat=(urlBack,numBad,fnScenario) => {
+
 createDivPerso()
 createDivZone(urlBack)
 
@@ -290,7 +309,8 @@ const start = async () => {
     btn.innerHTML = '<button class="button_next"><span>Suite</span></button>'
     btn.addEventListener("click",(e)=>{
     	reset()
-    	lancerCombat("url('image/eiffel_tower.jpg')",0,"fnScenario")
+    	textPage("De nombreux héros valeureux sont à l'attente d'un signe de vie pour secourir les citoyens en grand danger <br> A l'aide, a l'aide, nous sommes coincés au second étage de la WCS. Help_us, Help_us !!<br> Pour aider les formatrices en détresses, tu va devoir te rendre dans des lieux stratégiques \(gráce à une carte intéractive\) pour débloquer la situation des pauvres damoiselles.",  "image/Hancock_bench.gif")
+    	/*lancerCombat("url('image/eiffel_tower.jpg')",0,"fnScenario")*/
     })
 }
 
@@ -299,27 +319,34 @@ start()
 }
 
 
-const story1 = document.getElementById('story')
 
-btn.innerHTML = '<button class="button_next"><span>Suite</span></button>'
-    btn.addEventListener("click",(e)=>{
+
+
+
+const textPage = (text, url) => {
+    story1.innerHTML = `<div class="letexte">${text} <img class="letroll" src=${url} /></div>`
+    btn2.innerHTML = '<button class="button_next"><span>Suite</span></button>'
+    btn2.addEventListener("click",(e)=>{
     	reset()
     	createMap()
     })
-
-const textPage = (text, url) => {
-    story1.innerHTML = `<div class="letexte"><p class="patate">${text}</p> <img class="letroll" src=${url} /></div>`
 }
 
-textPage("Paris, vendredi avril 2018. Le black-out est total. Paris est plongé dans les ténèbres. Nombreux citoyens restent bloqués. Parmi eux 3 formatrices de renoms !! Bloquer dans les locaux de la WCS, elles requièrent de l'aide", "image/trio_de_choc.png")
-textPage("De nombreux héros valeureux sont à l'attente d'un signe de vie pour secourir les citoyens en grand danger <br> A l'aide, a l'aide, nous sommes coincées au second étage de la WCS. Help us, Help us !!<br> Pour aider les formatrices en détresse, tu vas devoir te rendre dans des lieux stratégiques \(grâce à une carte intéractive\) pour débloquer la situation des pauvres damoiselles.",  "image/Hancock_bench.gif")
-textPage("Bravo, tu as réussi à rétablir l'éléctricité à Paris, nos demoiselles sont libres. OUI MAIS !<br><br> Sacrebleu ses formatrices sont exigentes. Rassemble les matériaux pour résoudre leurs problèmes. ")
-textPage("Félicitation tu as réussi à récupérer le materiel essentiel à la résolution de notre problème tu peux à présent regagner la WCS afin de remplir ta mission.", "url")
-textPage("Les valeureux héros sont victorieux de leurs défis, et peuvent maintenant délivrer de leur victimes de la privation de la fibre.<br> Par chance, en retournant à la WCS les supers-héros ont aperçus un technicien 'Orange' sur leur chemin et l'ont trainer jusqu'a la WCS.<br>FIN HAPPY","image/trio_de_choc.png")
+
+const textPageIntro = (text, url) => {
+    story1.innerHTML = `<div class="letexte">${text} <img class="letroll" src=${url} /></div>`
+    btn2.innerHTML = '<button class="button_next"><span>Suite</span></button>'
+    btn2.addEventListener("click",(e)=>{
+    	reset()
+    	persoPage()
+    })
+}
+
+textPageIntro("Paris, vendredi avril 2018. Le black-out est total. Paris est plongé dans les ténèbres. Nombreux citoyens restent bloqués. Parmi eux 3 formatrices de renoms !! Bloquer dans les locaux de la WCS, elles requiérent de l'aide", "image/trio_de_choc.png")
 
 
 
-persoPage()
+
 
 
 
