@@ -332,6 +332,7 @@ const textPage = (text, url) => {
     })
 }
 
+
 const textPageIntro = (text, url) => {
     story1.innerHTML = `<div class="letexte">${text} <img class="letroll" src=${url} /></div>`
     btn2.innerHTML = '<button class="button_next"><span>Suite</span></button>'
@@ -342,11 +343,7 @@ const textPageIntro = (text, url) => {
 }
 
 textPageIntro("Paris, vendredi avril 2018. Le black-out est total. Paris est plongé dans les ténèbres. Nombreux citoyens restent bloqués. Parmi eux 3 formatrices de renoms !! Bloquer dans les locaux de la WCS, elles requiérent de l'aide", "image/trio_de_choc.png")
-/*textPage("De nombreux héros valeureux sont à l'attente d'un signe de vie pour secourir les citoyens en grand danger <br> A l'aide, a l'aide, nous sommes coincés au second étage de la WCS. Help_us, Help_us !!<br> Pour aider les formatrices en détresses, tu va devoir te rendre dans des lieux stratégiques \(grá̲ce à une carte intéractive\)
-pour débloquer la situation des pauvres damoiselles.", "image/Hancock_bench.gif")
 
-textPage("Félicitation tu as réussi à récuperer le materiel essentielle a la résolution de notre probléme tu peut à préscent regagner la WCS afin de remplir ta mission.", "url")
-textPage("Les valeureux héros sont victorieux de leurs défis, et peuvent maintenant délivrer de leur victimes de la privation de la fribre.<br> Par chance, en retournant à la WCS les supers-héros ont aperçus un technicien 'Orange' sur leur chemin et l'ont trainer jusqu'a la WCS.<br>FIN HAPPY","image/trio_de_choc.png")*/
 
 
 
