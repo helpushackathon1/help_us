@@ -16,8 +16,18 @@ let badTeam =[]
 
 
 const fightScreenElt = document.getElementById("fightScreen")
+const injectHeroes = document.getElementById('select_heroes')
+const choix = document.getElementById('choice')
+const injectTeamHeroes = document.getElementById('teamPerso')
+const btn = document.getElementById('btn_next')
 
-
+const reset = () => {
+	fightScreenElt.innerHTML = ""
+	injectHeroes.innerHTML = ""
+	choix .innerHTML = ""
+	injectTeamHeroes.innerHTML = ""
+	btn.innerHTML = ""
+}
 
 /*création zone de fight*/
 
@@ -47,10 +57,10 @@ const createDivZone = (urlBack) => {
 
 
 /* création perso*/
-const createPicturePerso = (perso) => {
+const createPicturePerso = (perso,tab) => {
 	let img = new Image()
 	img.src = perso.images.sm
-	imagePerso.push(img)
+	tab.push(img)
 	console.log("create image!")
 }
 
@@ -122,7 +132,7 @@ const lancerCombat=(urlBack,numBad,fnScenario) => {
 createDivPerso()
 createDivZone(urlBack)
 
-const recupPerso = (id) => {
+/*const recupPerso = (id) => {
 	return fetch(`https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api/id/${id}.json`)
 		.then(res => res.json())
 }
@@ -133,18 +143,22 @@ Promise.all([
 	recupPerso(3),
 	recupPerso(4),
 	recupPerso(5),
-]).then(heroes => {
+]).then(heroes => {*/
+	let heroes = persoTeam
 	console.log(heroes)
 	console.log(heroes[0].slug)
 	heroes.forEach(function(perso) {
-		createPicturePerso(perso)
+		createPicturePerso(perso,imagePerso)
   		console.log("forEach");
 	})
-	//tab des méchants = heroes ici en attendant 
-
-	imageBad = imagePerso 
+	//tab des méchants = on recupere la badteam fait sur selection des perso
+	badTeam.forEach(function(perso) {
+		createPicturePerso(perso,imageBad)
+  		console.log("badTeam"+badTeam);
+	})
+	/*imageBad = imagePerso 
 	persoTeam = heroes
-	badTeam = persoTeam
+	badTeam = persoTeam*/
 
 	tabX=["10px","260px","510px","760px","1010px"]
 	tabY=["10px","260px","510px","760px","1010px"]
@@ -175,11 +189,11 @@ Promise.all([
 			createButtonFight(persoTeam[i],badTeam[numBad],i)
 		})
 	}
-})
+}/*)
 
-}
+}*/
 
-lancerCombat("url('image/eiffel_tower.jpg')",3,"fnScenario")
+
 
 const persoPage = () => {
 const baseUrl = 'https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api'
@@ -194,7 +208,7 @@ const start = async () => {
     
     //injection instruction
 
-    const choix = document.getElementById('choice')
+    
     choix.innerHTML = '<h3>Compose ton équipe de 5 personnages différents</h3>'
 
     /* heroes random selection*/
@@ -205,7 +219,7 @@ const start = async () => {
     }
 
     // bad random team
-    const badTeam = []
+    /*const badTeam = []*/
     for (let i = 0; i < 3; i++) {
         const randomBadHeroes = heroes[Math.floor((Math.random() * heroes.length))]
         badTeam.push(randomBadHeroes)
@@ -223,11 +237,12 @@ const start = async () => {
     `
     }
 
-    const injectHeroes = document.getElementById('select_heroes')
+
+
     injectHeroes.innerHTML = selecteur.map(heroesElement).join('')
 
     //Creation de la team
-    const persoTeam = []
+   /*const persoTeam = []*/
     document.addEventListener("click", (e) => {
         const perso = e.target.parentElement.id
         
@@ -235,7 +250,7 @@ const start = async () => {
         persoTeam.push(fichePerso)
         console.log(persoTeam)
 
-        const injectTeamHeroes = document.getElementById('teamPerso')
+
         injectTeamHeroes.innerHTML = persoTeam.map(heroesTeamElement).join('')
     })
 
@@ -252,8 +267,12 @@ const start = async () => {
     }
 
     //injection button next
-    const btn = document.getElementById('btn_next')
+   
     btn.innerHTML = '<button class="button_next"><span>Suite</span></button>'
+    btn.addEventListener("click",(e)=>{
+    	reset()
+    	lancerCombat("url('image/eiffel_tower.jpg')",0,"fnScenario")
+    })
 }
 
 
