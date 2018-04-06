@@ -1,0 +1,13 @@
+#fightScreen {
+	display: flex;
+
+
+}
+
+body {
+	display : flex;
+}
+
+.caractClass {
+	white-space: pre-wrap;
+}
