@@ -16,6 +16,8 @@ let badTeam =[]
 
 const fightScreenElt = document.getElementById("fightScreen")
 
+/*
+
 /*création zone de fight*/
 
 const createDivPerso = () => {
@@ -23,7 +25,7 @@ const createDivPerso = () => {
 	divPerso.style.backgroundColor = "black"
 	divPerso.style.height = "1260px"
 	divPerso.style.width = "350px"
-	divPerso.style.border = "1px solid red"
+	/*divPerso.style.border = "1px solid red"*/
 	divPerso.id="divPersoId"
 	fightScreen.appendChild(divPerso)
 }
@@ -36,7 +38,7 @@ const createDivZone = (urlBack) => {
 	divZone.style.left="360px"
 	/*divZone.style.marginLeft= "200px"*/
 	divZone.style.width = "1400px"
-	divZone.style.border = "1px solid blue"
+	/*divZone.style.border = "1px solid blue"*/
 	divZone.id="divZoneId"
 	fightScreen.appendChild(divZone)
 }
@@ -73,7 +75,7 @@ const caractere = (perso) => {
 
 /*creation du bouton fight si clic sur perso */
 
-const createButtonFight = (perso1,perso2) => {
+const createButtonFight = (perso1,perso2,i) => {
 	let fightButton = document.createElement("input")
 		fightButton.setAttribute("name","fightButton")
     	fightButton.setAttribute("value","FIGHT")
@@ -81,6 +83,7 @@ const createButtonFight = (perso1,perso2) => {
 		fightButton.style.position ="absolute"
 		fightButton.style.top="800px"
 		fightButton.style.left="700px"
+		fightButton.width = "100px"
     	fightButton.addEventListener("click", (e)=> {
     		console.log("click sur FIGHHHHHHHHT")
     		console.log(perso1)
@@ -93,11 +96,16 @@ const createButtonFight = (perso1,perso2) => {
     		}
     		else if (perso1.powerstats.combat<=0) {
     			console.log("perso2 win"+perso1.powerstats.combat)
-    			console.log("direction map")
+    			
+    			persoTeam.splice(i,1)//suppression perso battu
+    			console.log("direction map ou game over si lenght = 0")
+    			console.log(persoTeam)
+
+
     		}
     		else {
     			console.log("personne ne gagne!"+perso1.powerstats.combat)
-    				console.log("rien ne change ")
+    			console.log("rien ne change ")
     				}
     	})
    		divZoneId.appendChild(fightButton);
@@ -159,13 +167,10 @@ Promise.all([
 			console.log("BOUTON FIGHT!")
 			console.log(persoTeam[i])
 			console.log(badTeam[numBad])
-			createButtonFight(persoTeam[i],badTeam[numBad])
+			createButtonFight(persoTeam[i],badTeam[numBad],i)
 		})
 	}
-
-
 })
-
 
 }
 
