@@ -1,7 +1,3 @@
-
-
-
-
 /* decla variable*/
 let persoTeam = []
 let imagePerso=[]
@@ -33,6 +29,7 @@ const reset = () => {
 	elem3.innerHTML = ""
 	story1.innerHTML = ""
 }
+
 /*creation de la map */
 
 const createMap = () => {
@@ -40,31 +37,25 @@ const createMap = () => {
 	map_element.innerHTML = `<img src ="image/paris_map.jpg" alt="Carte des combats" style="max-width: 1800px;
 		height: auto;">`
 
-	
 	elem1.innerHTML = `<img id="combat1" src ="image/eiffel_tower.png" alt="Tour Eiffel" 
 	style="max-width: 100px; height:auto; position:absolute; top: 500px; left: 700px">`
 	combat1.addEventListener("click", (e)=>{
 		reset()
     	lancerCombat("url('image/eiffel_tower.jpg')",0,"fnscenario")
-
 	})
-
 
 	elem2.innerHTML = `<img id="combat2" src ="image/gare.png" alt="Gare de Lyon" 
 	style="max-width: 200px; height:auto; position:absolute; top: 600px; left: 1100px">`
 	combat2.addEventListener("click", (e)=>{
 		reset()
-    	lancerCombat("url('image/gare.jpg')",0,"fnScenario")
-
+    	lancerCombat("url('image/gare.jpg')",1,"fnScenario")
 	})
-
 
 	elem3.innerHTML = `<img id="combat3" src ="image/WCS.png" alt="Wild Code School" 
 	style="max-width: 100px; height:auto; position:absolute; top: 600px; left: 900px">`
 	combat3.addEventListener("click", (e)=>{
-	console.log("click");
 	reset()
-	textPage("Les valeureux héros sont victorieux de leurs défis, et peuvent maintenant délivrer de leur victimes de la privation de la fribre.<br> Par chance, en retournant à la WCS les supers-héros ont aperçus un technicien 'Orange' sur leur chemin et l'ont trainer jusqu'a la WCS.<br>FIN HAPPY","image/trio_de_choc.png")
+	textPage("Les valeureux héros sont victorieux de leurs défis, et peuvent maintenant délivrer de leur victimes de la privation de la fibre.<br> Par chance, en retournant à la WCS les supers-héros ont aperçus un technicien 'Orange' sur leur chemin et l'ont trainé jusqu'a la WCS.<br>FIN HAPPY","image/trio_de_choc.png")
 	btn2.innerHTML = ""
 	})
 }
@@ -86,21 +77,16 @@ const createDivZone = (urlBack) => {
 	divZone.style.position ="absolute"
 	divZone.style.top="0px"
 	divZone.style.left="360px"
-	/*divZone.style.marginLeft= "200px"*/
 	divZone.style.width = "1400px"
 	divZone.id="divZoneId"
 	fightScreen.appendChild(divZone)
 }
 
-
-
 /* création perso*/
 const createPicturePerso = (perso,tab) => {
 	let img = new Image()
 	img.src = perso.images.sm
-	console.log(perso)
 	if (tab.length<6){tab.push(img)}
-	console.log("create image!")
 }
 
 const placerPerso = (persoImg,posX, posY,emplacement)=>{
@@ -108,8 +94,8 @@ const placerPerso = (persoImg,posX, posY,emplacement)=>{
 	persoImg.style.top = posX;
 	persoImg.style.left = posY;
 	emplacement.appendChild(persoImg);
-	console.log("placer perso exécuté!");
 }
+
 //div avec caractéristique
 const caractere = (perso) => {
 	let divCaract = document.createElement("div")
@@ -124,205 +110,163 @@ const caractere = (perso) => {
 
 /*lancer la pâge combat avec les perso selectionné */
 const lancerCombat=(urlBack,numBad,fnScenario) => {
+
 /*creation du bouton fight si clic sur perso */
+	const createButtonFight = (perso1,perso2,i,urlB) => {
+		let fightButton = document.createElement("input")
+			fightButton.setAttribute("name","fightButton")
+	    	fightButton.setAttribute("value","FIGHT")
+	    	fightButton.setAttribute("type","button")
+			fightButton.style.position ="absolute"
+			fightButton.style.backgroundColor = "red"
+			fightButton.style.fontSize = "24px"
+			fightButton.style.padding = "10px"
+			fightButton.style.color = "white"
+			fightButton.id = "fightButtonId"
+			fightButton.style.top="800px"
+			fightButton.style.left="700px"
+			fightButton.width = "100px"
+	    	fightButton.addEventListener("click", (e)=> {
+	    		perso1.powerstats.combat -= perso2.powerstats.strength
+	    		perso2.powerstats.combat -= perso1.powerstats.strength
+	    		if (perso2.powerstats.combat <= 0){
+	    			if (urlB == "url('image/eiffel_tower.jpg')"){
+	    				reset()
+	    				textPage("Bravo, tu as réussi à rétablir l'électricité á Paris, nos demoiselles sont libres. OUI MAIS !<br><br> Sacrebleu ses formatrices sont exigentes. Rassemble les matériaux pour résoudre leurs problémes. ")
+	    			}
+	    			else {
+	    				reset()
+	    				textPage("Félicitation tu as réussi à récuperer le materiel essentiel à la résolution de notre probléme tu peux à présent regagner la WCS afin de remplir ta mission.", "url")
+	    			}
+	    		}
+	    		else if (perso1.powerstats.combat<=0) {
+	    			console.log("perso2 win"+perso1.powerstats.combat)
+	    			persoTeam.splice(i-1,1)//suppression perso battu
+	    			imagePerso.splice(i-1,1)//suppression perso battu
+	    			reset()
+	    			createMap()
+	    		}
+	    	})
+	   		divZoneId.appendChild(fightButton);
+	}
 
-const createButtonFight = (perso1,perso2,i) => {
-	let fightButton = document.createElement("input")
-		fightButton.setAttribute("name","fightButton")
-    	fightButton.setAttribute("value","FIGHT")
-    	fightButton.setAttribute("type","button")
-		fightButton.style.position ="absolute"
-		fightButton.style.backgroundColor = "red"
-		fightButton.style.fontSize = "24px"
-		fightButton.style.padding = "10px"
-		fightButton.style.color = "white"
-		fightButton.id = "fightButtonId"
-		fightButton.style.top="800px"
-		fightButton.style.left="700px"
-		fightButton.width = "100px"
-    	fightButton.addEventListener("click", (e)=> {
-    		console.log("click sur FIGHHHHHHHHT")
-    		console.log(perso1)
-    		console.log("perso1 "+ perso1.powerstats.combat )
-    		perso1.powerstats.combat -= perso2.powerstats.strength
-    		perso2.powerstats.combat -= perso1.powerstats.strength
-    		if (perso2.powerstats.combat <= 0){
-    			console.log("perso1 win"+perso1.powerstats.combat )
-    			console.log("direction scenario suivant")
-    			if (urlBack == "url('image/eiffel_tower.jpg')"){
-    				reset()
-    				textPage("Bravo, tu as réussi à rétablir l'éléctricité á Paris, nos demoisselles sont libres. OUI MAIS !<br><br> Sacrebleu ses formatrices sont exigentes. Rassemble les matériaux pour résoudre leurs problémes. ")
-    			}
-    			else {
-    				reset()
-    				textPage("Félicitation tu as réussi à récuperer le materiel essentielle a la résolution de notre probléme tu peut à préscent regagner la WCS afin de remplir ta mission.", "url")
-    			}
-    			/*fnScenario()*/
-    			console.log("FN = "+fnScenario)
-    		}
-    		else if (perso1.powerstats.combat<=0) {
-    			console.log("perso2 win"+perso1.powerstats.combat)
-    			persoTeam.splice(i-1,1)//suppression perso battu
-    			imagePerso.splice(i-1,1)//suppression perso battu
-    			console.log("direction map ou game over si lenght = 0")
-    			console.log(persoTeam)
-    			reset()
-    			createMap()
-
-    		}
-    		else {
-    			console.log("personne ne gagne!"+perso1.powerstats.combat)
-    			console.log("rien ne change ")
-    				}
-    	})
-   		divZoneId.appendChild(fightButton);
-}
-
-
-
-createDivPerso()
-createDivZone(urlBack)
+	createDivPerso()
+	createDivZone(urlBack)
 
 
 	let heroes = persoTeam
-	console.log(heroes)
-	console.log(heroes[0].slug)
 	heroes.forEach(function(perso) {
 		if (perso != undefined) {
 		createPicturePerso(perso,imagePerso)
-  		console.log("forEach");
   	}
 	})
+
 	//tab des méchants = on recupere la badteam fait sur selection des perso
 	badTeam.forEach(function(perso) {
 		createPicturePerso(perso,imageBad)
-  		console.log("badTeam"+badTeam);
 	})
-
 
 	tabX=["10px","260px","510px","760px","1010px"]
 	tabY=["10px","260px","510px","760px","1010px"]
 
-	console.log(imagePerso)
 	for(let i = 0; i < persoTeam.length;i++){
-		console.log("placerperso = "+persoTeam.length)
-		placerPerso(imagePerso[i],tabX[i],"30px",divPersoId)
-	}
-
-	console.log(persoTeam[1])
-	console.log(caractere(persoTeam[1]))
-	console.log(badTeam)
-
-	for(let i = 0; i < persoTeam.length;i++){
-		placerPerso(caractere(persoTeam[i]),tabX[i],"200px",divPersoId)
+		if (persoTeam[i].powerstats.combat >= 0) {
+			placerPerso(imagePerso[i],tabX[i],"30px",divPersoId)
+			placerPerso(caractere(persoTeam[i]),tabX[i],"200px",divPersoId)
+		}
 	}
 
 	//rendre les images cliquables
 	for(let i=0;i<persoTeam.length;i++) {
 		imagePerso[i].addEventListener("click",(e)=>{
-			console.log("click"+imagePerso[i])
 			placerPerso(imagePerso[i],"400px","450px",divZoneId)
 			placerPerso(imageBad[numBad],"400px","900px",divZoneId)
-			console.log("BOUTON FIGHT!")
-			console.log(persoTeam[i])
-			console.log(badTeam[numBad])
-			createButtonFight(persoTeam[i],badTeam[numBad],i)
+			createButtonFight(persoTeam[i],badTeam[numBad],i,urlBack)
 		})
 	}
 }
 
-
 //creer page de selection des persos
 const persoPage = () => {
-const baseUrl = 'https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api'
+	const baseUrl = 'https://cdn.rawgit.com/akabab/superhero-api/0.2.0/api'
 
-const getHeroes = () => fetch(`${baseUrl}/all.json`)
-    .then(response => response.json())
+	const getHeroes = () => fetch(`${baseUrl}/all.json`)
+	    .then(response => response.json())
 
-const start = async () => {
-    const heroes = await getHeroes()
+	const start = async () => {
+	    const heroes = await getHeroes()
 
-    //fonction lancer choix des personnages
-    
-    //injection instruction
+	    //fonction lancer choix des personnages
+	    
+	    //injection instruction
 
-    
-    choix.innerHTML = '<h3>Compose ton équipe de 5 personnages différents</h3>'
+	    choix.innerHTML = '<h3>Compose ton équipe de 5 personnages différents</h3>'
 
-    /* heroes random selection*/
-    const selecteur = []
-    for (let i = 0; i < 10; i++) {
-        const randomHeroes = heroes[Math.floor((Math.random() * heroes.length))]
-        selecteur.push(randomHeroes)
-    }
+	    /* heroes random selection*/
+	    const selecteur = []
+	    for (let i = 0; i < 10; i++) {
+	        const randomHeroes = heroes[Math.floor((Math.random() * heroes.length))]
+	        selecteur.push(randomHeroes)
+	    }
 
-    // bad random team
-    /*const badTeam = []*/
-    for (let i = 0; i < 3; i++) {
-        const randomBadHeroes = heroes[Math.floor((Math.random() * heroes.length))]
-        badTeam.push(randomBadHeroes)
-    }
+	    // bad random team
+	    /*const badTeam = []*/
+	    for (let i = 0; i < 3; i++) {
+	        const randomBadHeroes = heroes[Math.floor((Math.random() * heroes.length))]
+	        badTeam.push(randomBadHeroes)
+	    }
 
-    //injection des heroes random dans le html
-    const heroesElement = monarray => {
-        return `
-            <div class='vignette_heroes' id="${monarray.id}" >
-                <img src='${monarray.images.sm}' />
-                <h3>${monarray.name}</h3>
-                <span>Life : ${monarray.powerstats.combat}</span>
-                <span>Attack : ${monarray.powerstats.strength}</span>
-            </div>
-    `
-    }
+	    //injection des heroes random dans le html
+	    const heroesElement = monarray => {
+	        return `
+	            <div class='vignette_heroes' id="${monarray.id}" >
+	                <img src='${monarray.images.sm}' />
+	                <h3>${monarray.name}</h3>
+	                <span>Life : ${monarray.powerstats.combat}</span>
+	                <span>Attack : ${monarray.powerstats.strength}</span>
+	            </div>
+	    `
+	    }
 
+	    injectHeroes.innerHTML = selecteur.map(heroesElement).join('')
 
-
-    injectHeroes.innerHTML = selecteur.map(heroesElement).join('')
-
-    //Creation de la team
-   /*const persoTeam = []*/
-    document.addEventListener("click", (e) => {
-        const perso = e.target.parentElement.id
-        
-        const fichePerso = heroes.find(heroe => heroe.id == perso)
-        persoTeam.push(fichePerso)
-        console.log(persoTeam)
+	    //Creation de la team
+	    injectHeroes.addEventListener("click", (e) => {
+	        const perso = e.target.parentElement.id
+	        
+	        const fichePerso = heroes.find(heroe => heroe.id == perso)
+	        persoTeam.push(fichePerso)
+	        console.log(persoTeam)
 
 
-        injectTeamHeroes.innerHTML = persoTeam.map(heroesTeamElement).join('')
-    })
+	        injectTeamHeroes.innerHTML = persoTeam.map(heroesTeamElement).join('')
+	    })
 
-    //injection des heroes choisi dans le html
-    const heroesTeamElement = monarray => {
-        return `
-            <div class='team_heroes' id="${monarray.id}" >
-                <img src='${monarray.images.sm}' />
-                <h3>${monarray.name}</h3>
-                <span>Life : ${monarray.powerstats.combat}</span>
-                <span>Attack : ${monarray.powerstats.strength}</span>
-            </div>
-    `
-    }
+	    //injection des heroes choisi dans le html
+	    const heroesTeamElement = monarray => {
+	        return `
+	            <div class='team_heroes' id="${monarray.id}" >
+	                <img src='${monarray.images.sm}' />
+	                <h3>${monarray.name}</h3>
+	                <span>Life : ${monarray.powerstats.combat}</span>
+	                <span>Attack : ${monarray.powerstats.strength}</span>
+	            </div>
+	    `
+	    }
 
-    //injection button next
-   
-    btn.innerHTML = '<button class="button_next"><span>Suite</span></button>'
-    btn.addEventListener("click",(e)=>{
-    	reset()
-    	textPage("De nombreux héros valeureux sont à l'attente d'un signe de vie pour secourir les citoyens en grand danger <br> A l'aide, a l'aide, nous sommes coincés au second étage de la WCS. Help_us, Help_us !!<br> Pour aider les formatrices en détresses, tu va devoir te rendre dans des lieux stratégiques \(gráce à une carte intéractive\) pour débloquer la situation des pauvres damoiselles.",  "image/Hancock_bench.gif")
-    	/*lancerCombat("url('image/eiffel_tower.jpg')",0,"fnScenario")*/
-    })
+	    //injection button next
+	   
+	    btn.innerHTML = '<button class="button_next"><span>Suite</span></button>'
+	    btn.addEventListener("click",(e)=>{
+	    	reset()
+	    	textPage("De nombreux héros valeureux sont en attente d'un signe de vie pour secourir les citoyens en grand danger <br> A l'aide, a l'aide, nous sommes coincés au second étage de la WCS. Help_us, Help_us !!<br> Pour aider les formatrices en détresses, tu va devoir te rendre dans des lieux stratégiques \(gráce à une carte intéractive\) pour débloquer la situation des pauvres damoiselles.",  "image/Hancock_bench.gif")
+	    })
+	}
+
+	start()
 }
 
-
-start()
-}
-
-
-
-
-
-
+//creation des pages de texte
 const textPage = (text, url) => {
     story1.innerHTML = `<div class="letexte">${text} <img class="letroll" src=${url} /></div>`
     btn2.innerHTML = '<button class="button_next"><span>Suite</span></button>'
@@ -331,7 +275,6 @@ const textPage = (text, url) => {
     	createMap()
     })
 }
-
 
 const textPageIntro = (text, url) => {
     story1.innerHTML = `<div class="letexte">${text} <img class="letroll" src=${url} /></div>`
@@ -342,12 +285,5 @@ const textPageIntro = (text, url) => {
     })
 }
 
+//Lancement
 textPageIntro("Paris, vendredi avril 2018. Le black-out est total. Paris est plongé dans les ténèbres. Nombreux citoyens restent bloqués. Parmi eux 3 formatrices de renoms !! Bloquer dans les locaux de la WCS, elles requiérent de l'aide", "image/trio_de_choc.png")
-
-
-
-
-
-
-
-
